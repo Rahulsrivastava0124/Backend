@@ -4,7 +4,7 @@ const ConfigurationSchema = new mongoose.Schema(
   {
     bhk: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const project_info = new mongoose.Schema({
@@ -22,7 +22,7 @@ const HeroSchema = new mongoose.Schema(
     configurations: [ConfigurationSchema],
     hero_images: [String], // Array of image paths
   },
-  { _id: false }
+  { _id: false },
 );
 
 const OverviewSchema = new mongoose.Schema(
@@ -32,7 +32,7 @@ const OverviewSchema = new mongoose.Schema(
     overview_description: String,
     overview_gallery_images: [String],
   },
-  { _id: false }
+  { _id: false },
 );
 
 const HighlightSchema = new mongoose.Schema(
@@ -41,7 +41,7 @@ const HighlightSchema = new mongoose.Schema(
     description: String,
     image: [String],
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ZoneSchema = new mongoose.Schema(
@@ -50,7 +50,7 @@ const ZoneSchema = new mongoose.Schema(
     title: String,
     active: Boolean,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const LocationCategorySchema = new mongoose.Schema(
@@ -58,7 +58,7 @@ const LocationCategorySchema = new mongoose.Schema(
     category: String,
     items: [String],
   },
-  { _id: false }
+  { _id: false },
 );
 
 const LocationAdvantageSchema = new mongoose.Schema(
@@ -68,7 +68,7 @@ const LocationAdvantageSchema = new mongoose.Schema(
     map_embed_url: String,
     location_categories: [LocationCategorySchema],
   },
-  { _id: false }
+  { _id: false },
 );
 
 const LayoutSchema = new mongoose.Schema(
@@ -79,7 +79,7 @@ const LayoutSchema = new mongoose.Schema(
     saleable_area: String,
     car_parks: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const LayoutAndFloorplanSchema = new mongoose.Schema(
@@ -87,7 +87,7 @@ const LayoutAndFloorplanSchema = new mongoose.Schema(
     layouts: [LayoutSchema],
     master_layout_description: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const AboutSchema = new mongoose.Schema(
@@ -99,7 +99,7 @@ const AboutSchema = new mongoose.Schema(
     group_title: String,
     group_description: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ProjectSchema = new mongoose.Schema(
@@ -116,7 +116,7 @@ const ProjectSchema = new mongoose.Schema(
     fresh_project: Boolean,
     development: Boolean,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Project", ProjectSchema);

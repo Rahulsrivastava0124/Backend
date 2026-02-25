@@ -114,7 +114,8 @@ exports.updateCareer = async (req, res) => {
       career.experience_level = experience_level;
     if (salary_range !== undefined) career.salary_range = salary_range;
     if (description !== undefined) career.description = description;
-    if (requirements !== undefined) career.requirements = Array.isArray(requirements) ? requirements : [];
+    if (requirements !== undefined)
+      career.requirements = Array.isArray(requirements) ? requirements : [];
     if (ending_date !== undefined) career.ending_date = ending_date;
     if (is_active !== undefined) career.is_active = is_active;
 

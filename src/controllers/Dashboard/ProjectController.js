@@ -280,10 +280,10 @@ exports.listProjects = async (req, res) => {
 function imagesChanged(newImages, oldImages) {
   if (!newImages && !oldImages) return false;
   if (!newImages || !oldImages) return true;
-  
+
   const newArr = Array.isArray(newImages) ? newImages : [newImages];
   const oldArr = Array.isArray(oldImages) ? oldImages : [oldImages];
-  
+
   if (newArr.length !== oldArr.length) return true;
   return !newArr.every((img, idx) => img === oldArr[idx]);
 }
@@ -297,7 +297,10 @@ exports.updateProject = async (req, res) => {
     const data = mapImagesToProjectData(req.body, req.files, req);
 
     // Delete old images ONLY if they actually changed
-    const projectLogoChanged = imagesChanged(data.project?.project_logo, project.project_info?.project_logo);
+    const projectLogoChanged = imagesChanged(
+      data.project?.project_logo,
+      project.project_info?.project_logo,
+    );
     if (projectLogoChanged && project.project_info?.project_logo) {
       deleteImageFiles(project.project_info.project_logo);
     } else if (!projectLogoChanged && project.project_info?.project_logo) {
@@ -305,7 +308,10 @@ exports.updateProject = async (req, res) => {
       data.project.project_logo = project.project_info.project_logo;
     }
 
-    const heroImagesChanged = imagesChanged(data.hero?.hero_images, project.hero?.hero_images);
+    const heroImagesChanged = imagesChanged(
+      data.hero?.hero_images,
+      project.hero?.hero_images,
+    );
     if (heroImagesChanged && project.hero?.hero_images) {
       deleteImageFiles(project.hero.hero_images);
     } else if (!heroImagesChanged && project.hero?.hero_images) {
@@ -313,18 +319,25 @@ exports.updateProject = async (req, res) => {
       data.hero.hero_images = project.hero.hero_images;
     }
 
-    const overviewChanged = imagesChanged(data.overview?.overview_gallery_images, project.overview?.overview_gallery_images);
+    const overviewChanged = imagesChanged(
+      data.overview?.overview_gallery_images,
+      project.overview?.overview_gallery_images,
+    );
     if (overviewChanged && project.overview?.overview_gallery_images) {
       deleteImageFiles(project.overview.overview_gallery_images);
     } else if (!overviewChanged && project.overview?.overview_gallery_images) {
       if (!data.overview) data.overview = {};
-      data.overview.overview_gallery_images = project.overview.overview_gallery_images;
+      data.overview.overview_gallery_images =
+        project.overview.overview_gallery_images;
     }
 
     // Handle highlights
     if (Array.isArray(data.highlights) && project.highlights) {
       data.highlights.forEach((h, idx) => {
-        const highlightChanged = imagesChanged(h.image, project.highlights[idx]?.image);
+        const highlightChanged = imagesChanged(
+          h.image,
+          project.highlights[idx]?.image,
+        );
         if (highlightChanged && project.highlights[idx]?.image) {
           deleteImageFiles(project.highlights[idx].image);
         } else if (!highlightChanged && project.highlights[idx]?.image) {
@@ -350,12 +363,21 @@ exports.updateProject = async (req, res) => {
     }
 
     // Handle layout and floorplan
-    if (data.layout_and_floorplan?.layouts && project.layout_and_floorplan?.layouts) {
+    if (
+      data.layout_and_floorplan?.layouts &&
+      project.layout_and_floorplan?.layouts
+    ) {
       data.layout_and_floorplan.layouts.forEach((l, idx) => {
-        const layoutChanged = imagesChanged(l.image, project.layout_and_floorplan.layouts[idx]?.image);
+        const layoutChanged = imagesChanged(
+          l.image,
+          project.layout_and_floorplan.layouts[idx]?.image,
+        );
         if (layoutChanged && project.layout_and_floorplan.layouts[idx]?.image) {
           deleteImageFiles(project.layout_and_floorplan.layouts[idx].image);
-        } else if (!layoutChanged && project.layout_and_floorplan.layouts[idx]?.image) {
+        } else if (
+          !layoutChanged &&
+          project.layout_and_floorplan.layouts[idx]?.image
+        ) {
           l.image = project.layout_and_floorplan.layouts[idx].image;
         }
       });
@@ -364,7 +386,10 @@ exports.updateProject = async (req, res) => {
     }
 
     // Handle about left_image
-    const aboutChanged = imagesChanged(data.about?.left_image, project.about?.left_image);
+    const aboutChanged = imagesChanged(
+      data.about?.left_image,
+      project.about?.left_image,
+    );
     if (aboutChanged && project.about?.left_image) {
       deleteImageFiles(project.about.left_image);
     } else if (!aboutChanged && project.about?.left_image) {

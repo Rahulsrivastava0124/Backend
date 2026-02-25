@@ -39,7 +39,7 @@ const CareerSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Career", CareerSchema);
