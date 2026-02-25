@@ -31,8 +31,6 @@ const OverviewSchema = new mongoose.Schema(
     overview_subtitle: String,
     overview_description: String,
     overview_gallery_images: [String],
-    overview_button_label: String,
-    overview_button_link: String,
   },
   { _id: false }
 );
@@ -88,7 +86,6 @@ const LayoutAndFloorplanSchema = new mongoose.Schema(
   {
     layouts: [LayoutSchema],
     master_layout_description: String,
-    download_pdf_url: String,
   },
   { _id: false }
 );
@@ -101,8 +98,6 @@ const AboutSchema = new mongoose.Schema(
     realty_description: String,
     group_title: String,
     group_description: String,
-    cta_button_text: String,
-    cta_button_link: String,
   },
   { _id: false }
 );

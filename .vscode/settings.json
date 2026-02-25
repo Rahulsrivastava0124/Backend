@@ -1,0 +1,8 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "/^sleep 1 && cd /Users/rahulkumarsrivastava/Documents/Github/Backend && node check_db\\.js 2>&1$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
+}

@@ -1,15 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const multer = require('multer');
-const AmenityController = require('../controllers/Dashboard/AmenityController');
-
-// Use memory storage for multer
-const upload = multer({ storage: multer.memoryStorage() });
+const AmenityController = require("../controllers/Dashboard/AmenityController");
+const {
+  upload,
+  autoDetectCategoryMiddleware,
+} = require("../middleware/upload");
 
 // Create a new amenity
-router.post('/amenities', upload.single('image'), AmenityController.createAmenity);
+router.post(
+  "/amenities",
+  autoDetectCategoryMiddleware,
+  upload.single("image"),
+  AmenityController.createAmenity,
+);
 
-// List all amenities
-router.get('/amenities', AmenityController.listAmenities);
+// Get all amenities
+router.get("/amenities", AmenityController.listAmenities);
 
-module.exports = router; 
+module.exports = router;

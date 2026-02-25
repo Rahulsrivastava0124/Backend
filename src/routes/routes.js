@@ -19,6 +19,7 @@ const homeAboutRoutes = require("./homeabout.routes");
 const associatedeveloperRoutes = require("./associatedeveloper.routes");
 const paymentListRoutes = require("./paymentlist.routes");
 const reviewRoutes = require("./review.routes");
+const careerRoutes = require("./career.routes");
 
 router.post("/login", login);
 router.post("/create", createAccount);
@@ -37,5 +38,6 @@ router.use(homeAboutRoutes);
 router.use(associatedeveloperRoutes);
 router.use(paymentListRoutes);
 router.use(reviewRoutes);
+router.use(careerRoutes);
 
 module.exports = router;

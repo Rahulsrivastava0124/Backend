@@ -1,8 +1,40 @@
 const AssociateDeveloper = require("../../models/AssociateDeveloper");
+const {
+  getUrlPath,
+  saveBase64Image,
+  sanitizeCategory,
+  getCategoryFromRequest,
+  deleteImageFiles,
+} = require("../../middleware/upload");
 
 const createAssociateDeveloper = async (req, res) => {
   try {
-    const { images } = req.body;
+    const images = [];
+    const category = sanitizeCategory(
+      getCategoryFromRequest(req) || "associatedeveloper",
+    );
+
+    // Handle file uploads
+    if (req.files && Array.isArray(req.files)) {
+      req.files.forEach((file) => {
+        const imageUrl = getUrlPath(file.path, category, req);
+        images.push(imageUrl);
+      });
+    }
+    // Handle base64 images from request body
+    else if (req.body.images && Array.isArray(req.body.images)) {
+      req.body.images.forEach((img) => {
+        if (
+          img &&
+          typeof img === "string" &&
+          (img.includes("base64") || img.length > 100)
+        ) {
+          const imageUrl = saveBase64Image(img, category, req);
+          images.push(imageUrl);
+        }
+      });
+    }
+
     const newAssociateDeveloper = new AssociateDeveloper({
       images,
     });
@@ -37,11 +69,16 @@ const getAssociateDeveloper = async (req, res) => {
 const updateAssociateDeveloper = async (req, res) => {
   try {
     const { id, index } = req.params;
+    const category = sanitizeCategory(
+      getCategoryFromRequest(req) || "associatedeveloper",
+    );
     let associateDeveloper;
     if (id) {
       associateDeveloper = await AssociateDeveloper.findById(id);
       if (!associateDeveloper) {
-        return res.status(404).json({ message: "Associate Developer not found" });
+        return res
+          .status(404)
+          .json({ message: "Associate Developer not found" });
       }
       // If index is also provided, remove the image at that index
       if (index !== undefined) {
@@ -69,9 +106,38 @@ const updateAssociateDeveloper = async (req, res) => {
     } else {
       return res.status(400).json({ message: "ID or index required" });
     }
-    // Default update: update images if provided
-    associateDeveloper.images = req.body.images || associateDeveloper.images;
-    await associateDeveloper.save();
+
+    // Delete old images first
+    if (associateDeveloper.images && Array.isArray(associateDeveloper.images)) {
+      deleteImageFiles(associateDeveloper.images);
+    }
+
+    let images = [];
+
+    // Handle file uploads
+    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+      req.files.forEach((file) => {
+        const imageUrl = getUrlPath(file.path, category, req);
+        images.push(imageUrl);
+      });
+      associateDeveloper.images = images;
+      await associateDeveloper.save();
+    }
+    // Handle base64 images from request body
+    else if (req.body.images && Array.isArray(req.body.images)) {
+      req.body.images.forEach((img) => {
+        if (
+          img &&
+          typeof img === "string" &&
+          (img.includes("base64") || img.length > 100)
+        ) {
+          const imageUrl = saveBase64Image(img, category, req);
+          images.push(imageUrl);
+        }
+      });
+      associateDeveloper.images = images;
+      await associateDeveloper.save();
+    }
     res.status(200).json({
       message: "Associate Developer updated successfully",
       data: associateDeveloper,
@@ -119,4 +185,4 @@ module.exports = {
   getAssociateDeveloper,
   updateAssociateDeveloper,
   deleteAssociateDeveloper,
-}; 
+};
