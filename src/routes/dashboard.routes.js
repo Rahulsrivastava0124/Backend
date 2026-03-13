@@ -1,12 +1,12 @@
 const express = require("express");
 const dashboardRouter = express.Router();
-const { listProjects } = require("../controllers/Dashboard/ProjectController");
+const { getMasters } = require("../controllers/Dashboard/MasterController");
 
 dashboardRouter.get("/home", (req, res) => {
   res.send("hello friend");
 });
 
-// Master data endpoint - returns all projects with master plan info
-dashboardRouter.get("/master", listProjects);
+// Master data endpoint - returns all records from masters collection
+dashboardRouter.get("/master", getMasters);
 
 module.exports = dashboardRouter;

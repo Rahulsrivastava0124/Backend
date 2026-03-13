@@ -276,6 +276,36 @@ exports.listProjects = async (req, res) => {
   }
 };
 
+// Master table - returns flat, table-friendly data for all projects
+exports.getMasterTable = async (req, res) => {
+  try {
+    const projects = await Project.find().select(
+      "_id project hero.title hero.price_range hero.land_area hero.possession_date hero.configurations overview.overview_title fresh_project development createdAt",
+    );
+
+    const tableData = projects.map((p) => ({
+      id: p._id,
+      project_name: p.project?.project_name || "",
+      project_logo: p.project?.project_logo?.[0] || null,
+      title: p.hero?.title || "",
+      price_range: p.hero?.price_range || "",
+      land_area: p.hero?.land_area || "",
+      possession_date: p.hero?.possession_date || "",
+      configurations: (p.hero?.configurations || [])
+        .map((c) => c.bhk)
+        .filter(Boolean),
+      overview_title: p.overview?.overview_title || "",
+      fresh_project: p.fresh_project || false,
+      development: p.development || false,
+      created_at: p.createdAt,
+    }));
+
+    res.json({ total: tableData.length, projects: tableData });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Helper to compare image arrays
 function imagesChanged(newImages, oldImages) {
   if (!newImages && !oldImages) return false;

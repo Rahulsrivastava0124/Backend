@@ -11,6 +11,7 @@ const {
   countUsers,
   deleteUser,
 } = require("../controllers/Auth/CreateAccount");
+const { getMasters } = require("../controllers/Dashboard/MasterController");
 const projectRoutes = require("./project.routes");
 const amenityRoutes = require("./amenity.routes");
 const domainsRoutes = require("./domain.routes");
@@ -30,6 +31,7 @@ router.delete("/users/:id", deleteUser);
 router.post("/request-password-reset", requestPasswordReset);
 router.post("/reset-password-otp", resetPasswordWithOTP);
 router.get("/users-count", countUsers);
+router.get("/master", getMasters);
 router.use(projectRoutes);
 router.use(amenityRoutes);
 router.use(domainsRoutes);
